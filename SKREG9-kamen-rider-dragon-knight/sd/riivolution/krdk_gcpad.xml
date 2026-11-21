@@ -1,0 +1,62 @@
+<wiidisc version="1">
+  <!-- Built by src/build.py. SKREG9 only: every main.dol patch checks the original. -->
+  <id game="SKRE"/>
+  <options>
+    <section name="Kamen Rider: Dragon Knight: GameCube controllers">
+      <option name="GameCube controllers (WUP-028)" default="1">
+        <choice name="On (ports 1-2 = players 1-2)"><patch id="dkgcpad"/></choice>
+      </option>
+      <option name="Face buttons" default="1">
+        <choice name="Layout A: B weak, A strong"><patch id="dkgcpad_g0_0"/></choice>
+        <choice name="Layout B: A weak, B strong"><patch id="dkgcpad_g0_1"/></choice>
+      </option>
+      <option name="Jump" default="3">
+        <choice name="R jumps, L dashes (Y cancel, Z card)"><patch id="dkgcpad_g1_0"/></choice>
+        <choice name="Y jumps, L dashes (Z cancel, R card)"><patch id="dkgcpad_g1_1"/></choice>
+        <choice name="L jumps, R dashes (Y cancel, Z card)"><patch id="dkgcpad_g1_2"/></choice>
+      </option>
+      <option name="Extra buttons" default="1">
+        <choice name="C-stick (D-Up = x + minus)"><patch id="dkgcpad_g2_0"/></choice>
+        <choice name="D-pad (C-Up = x + minus)"><patch id="dkgcpad_g2_1"/></choice>
+      </option>
+      <option name="HOME button" default="1">
+        <choice name="Start + Z"><patch id="dkgcpad_home_0"/></choice>
+        <choice name="Off"><patch id="dkgcpad_home_1"/></choice>
+      </option>
+    </section>
+  </options>
+  <patch id="dkgcpad" root="/krdk_gcpad">
+    <memory offset="0x803cffe0" valuefile="gcpad.bin"/>
+    <memory offset="0x80252180" value="4817DE61" original="48001581"/>
+    <memory offset="0x8001cd9c" value="483B3249" original="4822BBD5"/>
+    <memory offset="0x8001ce4c" value="483B319D" original="4822BB25"/>
+    <memory offset="0x800f74f0" value="482D8AFD" original="4817A7C1"/>
+  </patch>
+  <patch id="dkgcpad_g0_0">
+    <memory offset="0x803d2000" value="47434B300000000000000003000000400000002000000010"/>
+  </patch>
+  <patch id="dkgcpad_g0_1">
+    <memory offset="0x803d2000" value="47434B300000000000000003000000200000004000000010"/>
+  </patch>
+  <patch id="dkgcpad_g1_0">
+    <memory offset="0x803d2040" value="47434B31000000030000000400000004000000800000020000002000"/>
+  </patch>
+  <patch id="dkgcpad_g1_1">
+    <memory offset="0x803d2040" value="47434B31000000030000000400000200000000040000008000002000"/>
+  </patch>
+  <patch id="dkgcpad_g1_2">
+    <memory offset="0x803d2040" value="47434B31000000030000000400000004000000800000200000000200"/>
+  </patch>
+  <patch id="dkgcpad_g2_0">
+    <memory offset="0x803d2080" value="47434B3200000008000000080000100800001000000000000000000000000001000040000000000200008000"/>
+  </patch>
+  <patch id="dkgcpad_g2_1">
+    <memory offset="0x803d2080" value="47434B3200000008000000080000000100004000000000020000800000001008000010000000000000000000"/>
+  </patch>
+  <patch id="dkgcpad_home_0">
+    <memory offset="0x803d2100" value="47434B3400001010"/>
+  </patch>
+  <patch id="dkgcpad_home_1">
+    <memory offset="0x803d2100" value="47434B3400000000"/>
+  </patch>
+</wiidisc>

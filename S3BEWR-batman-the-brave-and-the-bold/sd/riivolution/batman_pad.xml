@@ -1,0 +1,14 @@
+<wiidisc version="1">
+  <!-- Built by src/build.py: main.dol with a GameCube pad section -->
+  <id game="S3BE"/>
+  <options>
+    <section name="Batman: The Brave and the Bold">
+      <option name="GameCube controllers (WUP-028)">
+        <choice name="On (ports 1-2 = players 1-2)"><patch id="batman_pad"/></choice>
+      </option>
+    </section>
+  </options>
+  <patch id="batman_pad" root="/batman_pad">
+    <file disc="main.dol" external="main.dol"/>
+  </patch>
+</wiidisc>
