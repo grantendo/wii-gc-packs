@@ -80,6 +80,8 @@ def apply(source, patch):
     while pos < end:
         d, pos = _dec(patch, pos)
         kind, length = d & 3, (d >> 2) + 1
+        if length > dst_size - len(out):  # checked before each step, so a bad patch can't grow the output first
+            raise ValueError("the patch writes past the size it declares (a damaged or invalid patch)")
         if kind == 0:
             out += source[len(out):len(out) + length]
         elif kind == 1:

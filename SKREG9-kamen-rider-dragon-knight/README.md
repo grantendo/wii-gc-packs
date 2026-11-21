@@ -38,6 +38,10 @@ The game's own button pictures stay the Classic Controller's.
 - **Wii U console with the GameCube adapter, through RiftWii:** 1 and 2 players; Reset from the HOME Menu keeps the GameCube controllers.
 - **Dolphin:** 1 and 2 players with the emulated adapter, and with a GameCube controller in a Wii's own port.
 
+## Known issues
+
+- Don't combine this pack with another mod that changes the game's code (its `main.dol`). Each of the pack's patches checks the original code it replaces, but Riivolution applies them one by one: if another mod had already changed one of them, the rest could still go in without the memory the pack sets aside for itself.
+
 ## How it works
 
 A 3.8 KB blob at the bottom of the game's main memory wraps the game's `KPADRead` calls and the HOME Menu's `WPADProbe` call: for a port with a GameCube controller, the game's Classic Controller fields are filled from it (its own Classic support does the rest), with a menu layout outside battles and the battle layout in them. It's a port of my Kamen Rider: Super Climax Heroes pack (same developer, the same controller code a few months older). See `src/`.
