@@ -7,7 +7,7 @@ one, (my Kamen Rider: Super Climax Heroes pack): compile gcpad.c into a blob at
     original instruction, so another version of the game is left alone),
   - writes one settings group per option choice (see gcpad.c: CFG_BASE).
 
-Usage: build.py [out dir]   (default: ../../build-controls)
+Usage: build.py [out dir]   (default: ../build)
 """
 import os, struct, subprocess, sys
 

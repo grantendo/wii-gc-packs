@@ -8,7 +8,7 @@ Cross way (my Super Sentai Battle: Ranger Cross pack): the game's memory ends at
   - 0x8026EED8 the controller update's KPADRead -> kpad_hook
   - 0x8026EF0C the controller update's WPADProbe -> probe_hook
 
-Usage: build.py [out dir]   (default: ../../build-pad)
+Usage: build.py [out dir]   (default: ../build)
 """
 import os
 import struct

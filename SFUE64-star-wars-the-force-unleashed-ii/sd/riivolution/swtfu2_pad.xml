@@ -10,22 +10,22 @@
     </section>
     <section name="GameCube controllers: P1 (controller port 1)">
       <option name="P1: Tap jump" id="swtfu2_p1_tap" default="0">
-        <choice name="On"><patch id="swtfu2_pad"/><patch id="swtfu2_tap1"/></choice>
+        <choice name="On (also turns on the GameCube controllers)"><patch id="swtfu2_pad"/><patch id="swtfu2_tap1"/></choice>
       </option>
     </section>
     <section name="GameCube controllers: P2 (controller port 2)">
       <option name="P2: Tap jump" id="swtfu2_p2_tap" default="0">
-        <choice name="On"><patch id="swtfu2_pad"/><patch id="swtfu2_tap2"/></choice>
+        <choice name="On (also turns on the GameCube controllers)"><patch id="swtfu2_pad"/><patch id="swtfu2_tap2"/></choice>
       </option>
     </section>
     <section name="GameCube controllers: P3 (controller port 3)">
       <option name="P3: Tap jump" id="swtfu2_p3_tap" default="0">
-        <choice name="On"><patch id="swtfu2_pad"/><patch id="swtfu2_tap3"/></choice>
+        <choice name="On (also turns on the GameCube controllers)"><patch id="swtfu2_pad"/><patch id="swtfu2_tap3"/></choice>
       </option>
     </section>
     <section name="GameCube controllers: P4 (controller port 4)">
       <option name="P4: Tap jump" id="swtfu2_p4_tap" default="0">
-        <choice name="On"><patch id="swtfu2_pad"/><patch id="swtfu2_tap4"/></choice>
+        <choice name="On (also turns on the GameCube controllers)"><patch id="swtfu2_pad"/><patch id="swtfu2_tap4"/></choice>
       </option>
     </section>
   </options>

@@ -38,6 +38,9 @@ In Story Mode the pack steps aside on any port where a real Wii Remote is connec
 - The special moves (the Saber Throw, a held B's charged power) haven't been seen working.
 - In the Multiplayer lobby, A on "Back" and B do nothing.
 - No rumble.
+- A tap jump option also turns on the GameCube controllers (its label says so); all of the pack's options must be off for the game's own controls.
+- Holding the stick up while a match starts can count as a tap jump.
+- For about half a second after Story Mode starts, a GameCube controller on the same port can still override a real Wii Remote.
 
 ## How it works
 

@@ -8,7 +8,7 @@ in that main.dol and offers tap jump per controller port.
   - 0x8026431C, 0x802645B0 its WPADProbe calls  -> probe_hook
   - 0x8026453C its WPAD sync-device call        -> sync_hook
 
-Usage: build.py [out dir]   (default: swtfu2-sfue64/build-pad)
+Usage: build.py [out dir]   (default: ../build)
 """
 import os
 import struct
@@ -68,7 +68,7 @@ def build_blob(tmp):
     assert syms["_entry"] == BASE, hex(syms["_entry"])
     assert syms["tap_jump"] == TAP_JUMP, hex(syms["tap_jump"])
     dis = subprocess.run([os.path.join(DKP, "powerpc-eabi-objdump.exe"), "-d", elf], capture_output=True,
-                         text=True).stdout
+                         text=True, check=True).stdout
     assert "(r13)" not in dis and "(r2)" not in dis, "the section uses the game's small-data registers"
     return blob, syms, dis
 
@@ -117,7 +117,7 @@ def xml():
     for port in range(1, 5):
         out += [f'    <section name="GameCube controllers: P{port} (controller port {port})">',
                 f'      <option name="P{port}: Tap jump" id="swtfu2_p{port}_tap" default="0">',
-                f'        <choice name="On"><patch id="swtfu2_pad"/><patch id="swtfu2_tap{port}"/></choice>',
+                f'        <choice name="On (also turns on the GameCube controllers)"><patch id="swtfu2_pad"/><patch id="swtfu2_tap{port}"/></choice>',
                 '      </option>', '    </section>']
     out += ['  </options>', '  <patch id="swtfu2_pad" root="/swtfu2_pad">',
             '    <file disc="main.dol" external="main.dol"/>', '  </patch>']

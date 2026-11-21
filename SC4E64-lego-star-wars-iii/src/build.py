@@ -10,7 +10,7 @@ up to 0x809C2508 and its apploader refuses a main.dol section above 0x80900000, 
       0x80292B88, 0x80292ED4, 0x802937D0, 0x80293CB8 the game's WPADProbe calls -> probe_hook
       0x80292CCC the game's KPADSetConnectCallback call      -> setcb_hook (a real Wii Remote shares the slot)
 
-Usage: build.py [out dir]   (default: ../../build-pad)
+Usage: build.py [out dir]   (default: ../build)
 """
 import os
 import struct
