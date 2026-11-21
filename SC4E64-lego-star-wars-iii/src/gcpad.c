@@ -276,13 +276,26 @@ s32 kpad_hook(s32 chan, u8* buf, u32 len) {
     /* Who owns the slot is decided by what's connected, not by whether KPAD had a sample this frame. */
     ext = real_remote(chan);
     if (ext == WPAD_DEV_FREESTYLE || ext == WPAD_DEV_CLASSIC) {
-        if (n > 0) prev_hold[chan] = *(u32*)buf; /* its own attachment wins, sample or not */
+        if (n > 0) {
+            /* Its own attachment wins, sample or not. The press and release edges are against what the game
+             * last saw, so a button the pad was holding when the attachment took over is let go. */
+            const u32 hold = *(u32*)buf, prev = prev_hold[chan];
+            *(u32*)(buf + 0x04) = hold & ~prev;
+            *(u32*)(buf + 0x08) = prev & ~hold;
+            prev_hold[chan] = hold;
+        }
         return n;
     }
-    if (ext >= 0 && n > 0) put_pad((u32)chan, p, *(u32*)buf, buf); /* a bare Wii Remote: the pad is its Nunchuk */
-    else write_sample((u32)chan, p, buf); /* no real Wii Remote, or no sample from it this frame */
+    if (ext >= 0) {
+        /* A bare Wii Remote: the pad is its Nunchuk. A frame with no sample from it passes through as it is
+         * (the game keeps its last sample, pointer and buttons included). */
+        if (n <= 0) return n;
+        put_pad((u32)chan, p, *(u32*)buf, buf);
+    } else {
+        write_sample((u32)chan, p, buf); /* no real Wii Remote: the whole sample from the pad */
+    }
     if (pads[chan].err == 0 && pad_active(&pads[chan])) VIResetRFIdle();
-    return ext >= 0 && n > 0 ? n : 1;
+    return ext >= 0 ? n : 1;
 }
 
 /* The game's WPADProbe(chan, &type): a channel with a pad is a Wii Remote with a Nunchuk. */
@@ -296,10 +309,13 @@ s32 probe_hook(s32 chan, u32* type) {
     return WPADProbe(chan, type);
 }
 
-/* The game's connect callback, as KPAD calls it: a real Wii Remote going off on a player whose pad is still
- * in never reaches the game as "gone" (the player stays; the pad carries on alone). */
+/* The game's connect callback, as KPAD calls it: on a player whose pad is in, a real Wii Remote going off never
+ * reaches the game as "gone" (the pad carries on alone), and coming back isn't a second "connected". */
 static void connect_filter(s32 chan, s32 reason) {
-    if (reason != 0 && chan >= 0 && chan < CHANNELS && live[chan]) return;
+    if (chan >= 0 && chan < CHANNELS && live[chan]) {
+        if (reason != 0) return;              /* the Wii Remote went off: the pad carries on, no "gone" */
+        if (announced[chan]) return;          /* it came back: the game already has this player connected */
+    }
     CONNECT_CB(chan, reason);
 }
 
