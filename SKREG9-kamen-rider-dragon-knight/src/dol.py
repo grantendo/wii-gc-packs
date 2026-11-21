@@ -3,8 +3,16 @@ disassembly (objdump) with branch targets, for searching by hand."""
 import os, re, struct, subprocess, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-# The game's own main.dol, from your disc: set MAIN_DOL, or put it next to this script as main.dol.
+# The game's own main.dol, from your disc: set MAIN_DOL, or put it next to this script as main.dol. It's checked
+# first: the pack patches fixed addresses, so only the supported disc's main.dol will do.
 DOL = os.environ.get("MAIN_DOL", os.path.join(os.path.dirname(os.path.abspath(__file__)), "main.dol"))
+MAIN_DOL_CRC32 = 0x6EFED686  # SKREG9
+import zlib as _zlib  # noqa: E402
+if not os.path.isfile(DOL):
+    raise SystemExit("no main.dol: set MAIN_DOL to the game's own main.dol, or put it next to this script")
+if _zlib.crc32(open(DOL, "rb").read()) != MAIN_DOL_CRC32:
+    raise SystemExit("%s isn't the main.dol this pack is for (SKREG9, CRC32 %08X): check the game, its region and "
+                     "its revision" % (DOL, MAIN_DOL_CRC32))
 OBJDUMP = r"C:\devkitPro\devkitPPC\bin\powerpc-eabi-objdump.exe"
 CACHE = os.path.join(tempfile.gettempdir(), "skreg9_dis.txt")
 data = open(DOL, "rb").read()

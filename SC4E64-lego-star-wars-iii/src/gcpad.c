@@ -265,17 +265,24 @@ s32 kpad_hook(s32 chan, u8* buf, u32 len) {
     s32 n, ext;
     if (chan == 0) read_pads();
     n = KPADRead(chan, buf, len);
-    if (chan < 0 || chan >= CHANNELS || len == 0 || !live[chan]) return n;
-    p = pads[chan].err == 0 ? &pads[chan] : &neutral;
-    ext = n > 0 ? real_remote(chan) : -1;
-    if (ext == WPAD_DEV_FREESTYLE || ext == WPAD_DEV_CLASSIC) {
-        prev_hold[chan] = *(u32*)buf; /* its own attachment wins */
+    if (chan < 0 || chan >= CHANNELS || len == 0) return n;
+    if (!live[chan]) {
+        /* No pad: the real Wii Remote's own sample. Remember its buttons, so a pad plugged in while one is
+         * held doesn't turn that held button into a second press. */
+        if (n > 0) prev_hold[chan] = *(u32*)buf;
         return n;
     }
-    if (ext >= 0) put_pad((u32)chan, p, *(u32*)buf, buf); /* a bare Wii Remote: the pad is its Nunchuk */
-    else write_sample((u32)chan, p, buf);
+    p = pads[chan].err == 0 ? &pads[chan] : &neutral;
+    /* Who owns the slot is decided by what's connected, not by whether KPAD had a sample this frame. */
+    ext = real_remote(chan);
+    if (ext == WPAD_DEV_FREESTYLE || ext == WPAD_DEV_CLASSIC) {
+        if (n > 0) prev_hold[chan] = *(u32*)buf; /* its own attachment wins, sample or not */
+        return n;
+    }
+    if (ext >= 0 && n > 0) put_pad((u32)chan, p, *(u32*)buf, buf); /* a bare Wii Remote: the pad is its Nunchuk */
+    else write_sample((u32)chan, p, buf); /* no real Wii Remote, or no sample from it this frame */
     if (pads[chan].err == 0 && pad_active(&pads[chan])) VIResetRFIdle();
-    return ext >= 0 ? n : 1;
+    return ext >= 0 && n > 0 ? n : 1;
 }
 
 /* The game's WPADProbe(chan, &type): a channel with a pad is a Wii Remote with a Nunchuk. */
